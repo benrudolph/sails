@@ -113,9 +113,58 @@ describe('sub-attribute criteria queries', function(cb) {
 					'>=': 5
 				}
 			}, checkListResult(2, cb));
-		});	
-	});
+		});
+  });
 
+	describe('between', function(cb) {
+
+    var testName = 'between test';
+
+    before(function (cb) {
+			User.createEach([{
+				age: 10,
+				name: 'Abe'
+			},
+			{
+				age: 9,
+				name: 'billy'
+			},
+			{
+				age: 8,
+        strAge: '8',
+				name: 'Joe'
+			},
+			{
+				age: 7,
+				name: 'sarah'
+      }], cb);
+		});
+
+    it('should find ages between', function(cb) {
+      User.findAll({
+        age: {
+          between: [8, 10]
+        }
+      }, checkListResult(1, cb))
+    });
+
+    it('should find string ages between', function(cb) {
+      User.findAll({
+        age: {
+          between: ['7', '10']
+        }
+      }, checkListResult(2, cb))
+    });
+
+    it('should find names between', function(cb) {
+      User.findAll({
+        name: {
+          between: ['Abe', 'joe']
+        }
+      }, checkListResult(1, cb))
+    })
+
+  });
 
 
 	describe('not (!)', function(cb) {
